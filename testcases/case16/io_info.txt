@@ -1,0 +1,2 @@
+26 4
+PI_i1 PI_i2 PI_A_5_ PI_A_4_ PI_A_3_ PI_A_2_ PI_A_1_ PI_A_0_ PI_B_5_ PI_B_4_ PI_B_3_ PI_B_2_ PI_B_1_ PI_B_0_ PI_C_5_ PI_C_4_ PI_C_3_ PI_C_2_ PI_C_1_ PI_C_0_ PI_D_5_ PI_D_4_ PI_D_3_ PI_D_2_ PI_D_1_ PI_D_0_ PO_o1 PO_o2 PO_o3 PO_o4

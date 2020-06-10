@@ -1,0 +1,10 @@
+GATE buf  0 y=a;           PIN * NONINV 1 0 0 0 0 0
+GATE not  0 y=!a;          PIN * INV    1 0 0 0 0 0
+GATE and  1 y=a*b;         PIN * NONINV 1 0 0 0 0 0
+GATE nand 1 y=!a+!b;       PIN * NONINV 1 0 0 0 0 0
+GATE or   1 y=a+b;         PIN * NONINV 1 0 0 0 0 0
+GATE nor  1 y=!a*!b;       PIN * NONINV 1 0 0 0 0 0
+GATE xor  1 y=a*!b+!a*b;   PIN * NONINV 1 0 0 0 0 0
+GATE xnor 1 y=a*b+!a*!b;   PIN * NONINV 1 0 0 0 0 0
+GATE zero 0 O=CONST0;
+GATE one  0 O=CONST1;

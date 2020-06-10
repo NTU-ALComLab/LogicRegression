@@ -1,0 +1,2 @@
+43 7
+PI_it1 PI_it2 PI_it3 PI_it4 PI_it5 PI_it6 PI_it8 PI_it7 PI_it9 PI_it10 PI_jt1 PI_jt2 PI_jt3 PI_jt4 PI_jt5 PI_jt6 PI_jt8 PI_jt7 PI_jt9 PI_jt10 PI_jt11 PI_jt12 PI_jt13 PI_jt14 PI_jt15 PI_kt1 PI_kt2 PI_kt3 PI_kt4 PI_kt5 PI_kt6 PI_kt8 PI_kt7 PI_x1 PI_x2 PI_x3 PI_x4 PI_x5 PI_x6 PI_x7 PI_x8 PI_x9 PI_x10 PO_o1 PO_o2 PO_o3 PO_o4 PO_o5 PO_o6 PO_o7
