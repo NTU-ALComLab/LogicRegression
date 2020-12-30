@@ -511,6 +511,7 @@ int main(int argc, char** argv) {
 	vector<bool> output_tendency = inputs.get_output_tendency();
 //	cout << "output tendency:"; for (auto i : output_tendency) cout << ' ' << i; cout << endl;
 
+	abc.init();
 	for( int i = 0; i < numPO; ++i ) {
 		cube_or_comcube.push_back(false);
 		cubes_and_comcubes_2abc.push_back(vector<string>());
@@ -573,13 +574,11 @@ int main(int argc, char** argv) {
 
     /****** Build Circuit ******/
 
-	char lut_file[32] = "my.lut";
 	char lib_file[32] = "my.genlib";
 	char pla_file[32] = "top.pla";
     char pre_opt_file[32] = "pre_opt.v";
     char inter_opt_file[32] = "inter_opt.v";
 	int iter = 8;
-	abc.read_lut(lut_file);
 	abc.read_lib(lib_file);
 	abc.init();
 
