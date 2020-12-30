@@ -29,7 +29,7 @@
 
 #define TIME_LIMIT 2700
 #define DISCOUNT   0.9
-#define MAX_DEP    25
+#define MAX_DEP	25
 
 #define TEST_NUM 500000
 
@@ -56,7 +56,7 @@ vector<string> PO_name;
 
 vector< vector<Variable> > vars_with_same_len;
 vector< Variable > output_vars;
-vector<vector<string>> 	cubes_and_comcubes_2abc; 			// First index: output_id, Second index: sequence of string
+vector<vector<string>>	 cubes_and_comcubes_2abc;			 // First index: output_id, Second index: sequence of string
 vector<bool>	cube_or_comcube;							// First index: input_id
 vector< pair< vector<Group>, vector<int> > > comcube_info;	// First index: in order of input with Groups
 vector< pair< vector<Group_v2>, Pattern > > math_info;
@@ -104,7 +104,7 @@ bool build_circuit_with_group_v2 () {
 		
 		build_arithmetic_circuit(math_info[i].first, math_info[i].second);
 	}
-    return !math_info.empty();
+	return !math_info.empty();
 }
 
 int calc_gate(char * file) {
@@ -197,7 +197,7 @@ void find_all_groups( int ouput_id, vector<Group>& groups, bool isGrouped[] )
 						case SMALLER_THAN: rel = "SMALLER_THAN"; break;
 						default: rel = "NO_RELATION"; break;
 					}
-                    LogWithTime("Relation \"%s\" is found\n", rel.c_str());
+					LogWithTime("Relation \"%s\" is found\n", rel.c_str());
 
 					for( size_t n=0; n<vars_with_same_len[i][j].size(); ++n )
 						isGrouped[ vars_with_same_len[i][j][n] ] = true;
@@ -222,11 +222,11 @@ bool find_all_groups_v2( int inputs_longest, int output_var_id )
 		if( g.valid() ){
 			string rel;
 			switch( g.get_relation() ) {
-				case ADD      : rel = "ADD";     break;
+				case ADD	  : rel = "ADD";	 break;
 				case SUBTRACT: rel = "SUBTRACT"; break;
-                default: break;
+				default: break;
 			}
-            LogWithTime("Relation \"%s\" is found ( %d )\n", rel.c_str(), g.get_ratio());
+			LogWithTime("Relation \"%s\" is found ( %d )\n", rel.c_str(), g.get_ratio());
 
 			math_info.back().first.push_back( g );
 		}
@@ -251,29 +251,29 @@ string minterm2pla(Pattern& p, Dep_pat& dep) {
 
 void construct_cubes_FBDT( int output_id, vector<int>& dependency_rank_overall, bool output_tendency )
 {
-    LogWithTime("Construct network of output no. %2d with FBDT\n", output_id);
+	LogWithTime("Construct network of output no. %2d with FBDT\n", output_id);
 
 	queue< Cube > cube_queue;
 	vector< string > cubes_pla; 
 	int depth = 0;
-    Inputs inputs;
-    CubeInfo info;
+	Inputs inputs;
+	CubeInfo info;
 	Cube cube( numPI );
-    cube_queue.push( cube );
+	cube_queue.push( cube );
 
 	while( !cube_queue.empty() ){
 		cube = cube_queue.front();
 		cube_queue.pop();
 
 		if( cube.size() > depth )
-            LogWithTime("    ..Exploring depth: %2d\n", (depth = cube.size()) );
+			LogWithTime("	..Exploring depth: %2d\n", (depth = cube.size()) );
 
-        if (dead && cube.getTendency() != output_tendency) {
-            cubes_and_comcubes_2abc.back().push_back( cube.to_string() );
-            continue;
-        }
+		if (dead && cube.getTendency() != output_tendency) {
+			cubes_and_comcubes_2abc.back().push_back( cube.to_string() );
+			continue;
+		}
 
-        inputs.reset();
+		inputs.reset();
 		info = inputs.find_critical_input( cube, output_id );
 		
 		// comment this line to disable time limit for each output
@@ -295,10 +295,10 @@ void construct_cubes_FBDT( int output_id, vector<int>& dependency_rank_overall, 
 		}
 		else{
 			cube.assign( info.criticalInput, '0' );
-            cube.setTendency( info.negCofacTendency );
+			cube.setTendency( info.negCofacTendency );
 			cube_queue.push( cube );
 			cube.assign( info.criticalInput, '1' );
-            cube.setTendency( info.posCofacTendency );
+			cube.setTendency( info.posCofacTendency );
 			cube_queue.push( cube );
 		}
 	}
@@ -308,19 +308,19 @@ bool construct_cubes_template( int output_id, vector<int>& dependency_rank_overa
 {
 	// Examine the dependency
 	if( dependency_count == 0 ) return false;
-    LogWithTime("Construct network of output no. %2d with template\n", output_id);
+	LogWithTime("Construct network of output no. %2d with template\n", output_id);
 
 	vector<Group> relation_groups;
 	bool input_has_grouped[numPI];
 	find_all_groups( output_id, relation_groups, input_has_grouped );
 	
 	if( relation_groups.empty() ) {
-        LogWithTime("    No groups are found in output no. %2d\n", output_id);
+		LogWithTime("	No groups are found in output no. %2d\n", output_id);
 		return false;
 	}
 	
 
-    LogWithTime("%2lu groups are found in output no. %2d\n", relation_groups.size(), output_id);
+	LogWithTime("%2lu groups are found in output no. %2d\n", relation_groups.size(), output_id);
 
 	// compact_numPI represents for 
 	vector<int> input_id_alone;
@@ -335,19 +335,19 @@ bool construct_cubes_template( int output_id, vector<int>& dependency_rank_overa
 	// Start building
 	queue< Compact_Cube > com_cube_queue;
 	int depth = 0;
-    CubeInfo info;
+	CubeInfo info;
 	Compact_Cube com_cube( compact_numPI );
 	com_cube_queue.push( com_cube );
-    Inputs inputs(com_cube.capacity());
+	Inputs inputs(com_cube.capacity());
 
 	while( !com_cube_queue.empty() ) {
 		com_cube = com_cube_queue.front();
 		com_cube_queue.pop();
 		
 		if( com_cube.size() > depth )
-            LogWithTime("    ..Exploring depth: %2d\n", (depth = com_cube.size()) );
+			LogWithTime("	..Exploring depth: %2d\n", (depth = com_cube.size()) );
 
-        inputs.reset();
+		inputs.reset();
 		info = inputs.find_critical_input(com_cube, output_id, 1);
 	
 
@@ -363,19 +363,19 @@ bool construct_cubes_template( int output_id, vector<int>& dependency_rank_overa
 		}
 		else {
 			com_cube.assign( info.criticalInput, '0' );
-            com_cube.setTendency( info.negCofacTendency );
+			com_cube.setTendency( info.negCofacTendency );
 			com_cube_queue.push( com_cube );
 			com_cube.assign( info.criticalInput, '1' );
-            com_cube.setTendency( info.posCofacTendency );
+			com_cube.setTendency( info.posCofacTendency );
 			com_cube_queue.push( com_cube );
 		}
 	}
 
-    return true;
+	return true;
 }
 
 void calc_time_for_output(vector<Dep_pat>& out_dep, int out) {
-    float elapsed_time = getElapsedTime( program_start_time );
+	float elapsed_time = getElapsedTime( program_start_time );
 	float time_left = TIME_LIMIT * 0.9 - elapsed_time;
 
 	deadline = elapsed_time + time_left * pow(2, out_dep[out].count() / 64) / denom * DISCOUNT;
@@ -480,24 +480,24 @@ int main(int argc, char** argv) {
 		cout << out_dep[i] << ' ' << out_dep[i].count() << endl;
 	}
 */
-    sort( all_input_vars.begin(), all_input_vars.end() );
-    sort( all_output_vars.begin(), all_output_vars.end() );
-    for (size_t i = 0; i < all_input_vars.size(); ++i)
-        cout << all_input_vars[i].get_name() << ' ';
-    cout << '\n';
-    for (size_t i = 0; i < all_output_vars.size(); ++i) {
-        for (size_t j = 0; j < all_output_vars[i].size(); ++j) {
-            cout << setw(16) << trim(PO_name[ all_output_vars[i][j] ], "PO_") << ": ";
-            string s = out_dep[ all_output_vars[i][j] ].to_string();
-            for (size_t k = 0; k < all_input_vars.size(); ++k) {
-                for (size_t l = 0; l < all_input_vars[k].size(); ++l) {
-                    cout << s[ all_input_vars[k][l] ];
-                }
-                cout << ' ';
-            }
-            cout << out_dep[ all_output_vars[i][j] ].count() << '\n';
-        }
-    }
+	sort( all_input_vars.begin(), all_input_vars.end() );
+	sort( all_output_vars.begin(), all_output_vars.end() );
+	for (size_t i = 0; i < all_input_vars.size(); ++i)
+		cout << all_input_vars[i].get_name() << ' ';
+	cout << '\n';
+	for (size_t i = 0; i < all_output_vars.size(); ++i) {
+		for (size_t j = 0; j < all_output_vars[i].size(); ++j) {
+			cout << setw(16) << trim(PO_name[ all_output_vars[i][j] ], "PO_") << ": ";
+			string s = out_dep[ all_output_vars[i][j] ].to_string();
+			for (size_t k = 0; k < all_input_vars.size(); ++k) {
+				for (size_t l = 0; l < all_input_vars[k].size(); ++l) {
+					cout << s[ all_input_vars[k][l] ];
+				}
+				cout << ' ';
+			}
+			cout << out_dep[ all_output_vars[i][j] ].count() << '\n';
+		}
+	}
 
 	// calculate denominator for time factor
 	for (int i = 0; i < numPO; ++i) {
@@ -523,11 +523,11 @@ int main(int argc, char** argv) {
 		vector<int> dependency_rank = inputs.get_sig_in(i);
 		int dependency_count = out_dep[i].count();
 		if (dependency_count <= BRUTE_FORCE_DEPTH) {
-            LogWithTime("Construct network of output no. %2d with brute force (dep count = %2d)\n", i, dependency_count);
+			LogWithTime("Construct network of output no. %2d with brute force (dep count = %2d)\n", i, dependency_count);
 			vector<int> sig_in = inputs.get_sig_in(i);
-	 		out_dep[i].reset_all();
- 			for (int k = 0; k < dependency_count; ++k)
- 				out_dep[i].set(sig_in[k]);
+			 out_dep[i].reset_all();
+			 for (int k = 0; k < dependency_count; ++k)
+				 out_dep[i].set(sig_in[k]);
 
 			sample_brute_force(out_dep[i], sig_in, in_pat);
 			ioh.get_io_rel(in_pat, io_rel);
@@ -543,10 +543,10 @@ int main(int argc, char** argv) {
 		else {
 			dead = false;
 			calc_time_for_output(out_dep, i);
-            bool fTemplate = true;
-            bool success = false;
-            if ( fTemplate ) success = construct_cubes_template( i, dependency_rank, dependency_count, output_tendency[i] );
-            if ( !success  ) construct_cubes_FBDT( i, dependency_rank, output_tendency[i] );
+			bool fTemplate = true;
+			bool success = false;
+			if ( fTemplate ) success = construct_cubes_template( i, dependency_rank, dependency_count, output_tendency[i] );
+			if ( !success  ) construct_cubes_FBDT( i, dependency_rank, output_tendency[i] );
 			if( cube_or_comcube.back() ) {
 			/* SIMULATE SINGLE OUTPUT CIRCUIT */ 
 				vector<Abc_Obj_t *> fanout;
@@ -567,17 +567,17 @@ int main(int argc, char** argv) {
 				LogWithTime("timeout!!!!!!!!!!!! @ output %d\n", i);
 			}
 		}
-        LogWithTime("Construction of output no. %2d took %.3f sec\n", i, getElapsedTime(start));
+		LogWithTime("Construction of output no. %2d took %.3f sec\n", i, getElapsedTime(start));
 		
 	}
 
 
-    /****** Build Circuit ******/
+	/****** Build Circuit ******/
 
 	char lib_file[32] = "my.genlib";
 	char pla_file[32] = "top.pla";
-    char pre_opt_file[32] = "pre_opt.v";
-    char inter_opt_file[32] = "inter_opt.v";
+	char pre_opt_file[32] = "pre_opt.v";
+	char inter_opt_file[32] = "inter_opt.v";
 	int iter = 8;
 	abc.read_lib(lib_file);
 	abc.init();
@@ -604,48 +604,48 @@ int main(int argc, char** argv) {
 		if (cube_or_comcube[i])
 			use_group_method = true;
 
-    abc.map();
-    abc.write_verilog(pre_opt_file);
-    if (!use_group_method) {
-        abc.collapse();
-        abc.strash();
-        abc.map();
-        abc.write_verilog(inter_opt_file);
-    }
-    abc.strash();
+	abc.map();
+	abc.write_verilog(pre_opt_file);
+	if (!use_group_method) {
+		abc.collapse();
+		abc.strash();
+		abc.map();
+		abc.write_verilog(inter_opt_file);
+	}
+	abc.strash();
 
-    int curr_gate_cnt = 0, last_gate_cnt = abc.get_gate_num();
-    auto start_opt_time = chrono::high_resolution_clock::now();
-    while ( getElapsedTime( start_opt_time ) < 60 )  {
-        optimize(iter);
-        optimize(iter);
-        optimize(iter);
-        abc.strash();
-        curr_gate_cnt = abc.get_gate_num();
-        if (curr_gate_cnt >= last_gate_cnt)
-            break;
-        last_gate_cnt = curr_gate_cnt;
-    }
+	int curr_gate_cnt = 0, last_gate_cnt = abc.get_gate_num();
+	auto start_opt_time = chrono::high_resolution_clock::now();
+	while ( getElapsedTime( start_opt_time ) < 60 )  {
+		optimize(iter);
+		optimize(iter);
+		optimize(iter);
+		abc.strash();
+		curr_gate_cnt = abc.get_gate_num();
+		if (curr_gate_cnt >= last_gate_cnt)
+			break;
+		last_gate_cnt = curr_gate_cnt;
+	}
 	abc.map();
 	abc.write_verilog(argv[3]);
 
 	int gate_count = calc_gate(argv[3]);
 
-    int pre_opt_count = calc_gate(pre_opt_file);
-    if (pre_opt_count < gate_count) {
-        string cmd;
-        cmd = "mv " + string(pre_opt_file) + " " + string(argv[3]);
-        system(cmd.c_str());
-        gate_count = pre_opt_count;
-    }
-    if (!use_group_method) {
-        int inter_opt_count = calc_gate(inter_opt_file);
-        if (inter_opt_count < gate_count) {
-            string cmd = "mv " + string(inter_opt_file) + " " + string(argv[3]);
-            system(cmd.c_str());
-            gate_count = inter_opt_count;
-        }
-    }
+	int pre_opt_count = calc_gate(pre_opt_file);
+	if (pre_opt_count < gate_count) {
+		string cmd;
+		cmd = "mv " + string(pre_opt_file) + " " + string(argv[3]);
+		system(cmd.c_str());
+		gate_count = pre_opt_count;
+	}
+	if (!use_group_method) {
+		int inter_opt_count = calc_gate(inter_opt_file);
+		if (inter_opt_count < gate_count) {
+			string cmd = "mv " + string(inter_opt_file) + " " + string(argv[3]);
+			system(cmd.c_str());
+			gate_count = inter_opt_count;
+		}
+	}
 
 	cout << "# of gates: " << gate_count << '\n';
 	cout << "Time taken: " << getElapsedTime( program_start_time ) << '\n';
